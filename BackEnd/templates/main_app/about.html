@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}Acerca de - OPCPR{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8 mx-auto">
+        <h1>{{ title }}</h1>
+        <p class="lead">{{ message }}</p>
+        
+        <div class="card mt-4">
+            <div class="card-body">
+                <h5 class="card-title">Características del Proyecto</h5>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">✅ Django 5.2.4 configurado</li>
+                    <li class="list-group-item">✅ Django REST Framework para APIs</li>
+                    <li class="list-group-item">✅ CORS habilitado para frontend</li>
+                    <li class="list-group-item">✅ Variables de entorno con python-decouple</li>
+                    <li class="list-group-item">✅ Manejo de archivos media con Pillow</li>
+                    <li class="list-group-item">✅ Templates con Bootstrap 5</li>
+                    <li class="list-group-item">✅ Modelos de ejemplo (Post, Category, UserProfile)</li>
+                    <li class="list-group-item">✅ Panel de administración configurado</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="card mt-4">
+            <div class="card-body">
+                <h5 class="card-title">Estructura del Proyecto</h5>
+                <pre><code>BackEnd/
+├── opcpr_project/          # Configuración principal
+├── main_app/              # Aplicación principal
+├── templates/             # Templates HTML
+├── static/               # Archivos estáticos (CSS, JS, imágenes)
+├── media/                # Archivos subidos por usuarios
+├── .env                  # Variables de entorno
+└── manage.py            # Comando principal de Django</code></pre>
+            </div>
+        </div>
+        
+        <div class="mt-4">
+            <a href="{% url 'home' %}" class="btn btn-primary">Volver al inicio</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

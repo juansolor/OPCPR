@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}Inicio - OPCPR{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8 mx-auto">
+        <div class="jumbotron bg-primary text-white p-5 rounded mb-4">
+            <h1 class="display-4">{{ title }}</h1>
+            <p class="lead">{{ message }}</p>
+            <hr class="my-4">
+            <p>Esta es una aplicación Django con REST API configurada y lista para usar.</p>
+            <a class="btn btn-light btn-lg" href="{% url 'about' %}" role="button">Saber más</a>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-3 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Django Admin</h5>
+                        <p class="card-text">Panel de administración para gestionar contenido.</p>
+                        <a href="/admin/" class="btn btn-primary">Ir al Admin</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">API Health</h5>
+                        <p class="card-text">Endpoint para verificar el estado de la API.</p>
+                        <a href="/api/health/" class="btn btn-success">Verificar API</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">OPC UA API</h5>
+                        <p class="card-text">API para leer/escribir datos del supervisorio OPC UA.</p>
+                        <a href="/api/supervisorio/" class="btn btn-warning">Supervisorio</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Documentación</h5>
+                        <p class="card-text">Información sobre el proyecto y sus características.</p>
+                        <a href="{% url 'about' %}" class="btn btn-info">Ver más</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

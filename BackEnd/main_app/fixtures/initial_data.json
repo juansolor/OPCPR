@@ -1,0 +1,114 @@
+[
+    {
+        "model": "main_app.variabletype",
+        "pk": 1,
+        "fields": {
+            "name": "Entrada Digital",
+            "description": "Variables de entrada digital (ON/OFF)"
+        }
+    },
+    {
+        "model": "main_app.variabletype",
+        "pk": 2,
+        "fields": {
+            "name": "Salida Digital",
+            "description": "Variables de salida digital (ON/OFF)"
+        }
+    },
+    {
+        "model": "main_app.variabletype",
+        "pk": 3,
+        "fields": {
+            "name": "Variable Analógica",
+            "description": "Variables analógicas de medición"
+        }
+    },
+    {
+        "model": "main_app.variabletype",
+        "pk": 4,
+        "fields": {
+            "name": "Parámetro",
+            "description": "Parámetros de configuración del sistema"
+        }
+    },
+    {
+        "model": "main_app.variabletype",
+        "pk": 5,
+        "fields": {
+            "name": "Estado",
+            "description": "Variables de estado del sistema"
+        }
+    },
+    {
+        "model": "main_app.systemconfiguration",
+        "pk": 1,
+        "fields": {
+            "key": "opcua_connection_timeout",
+            "value": "30000",
+            "description": "Tiempo de espera para conexiones OPC-UA en milisegundos",
+            "value_type": "INTEGER",
+            "created_at": "2025-07-21T10:00:00Z",
+            "updated_at": "2025-07-21T10:00:00Z"
+        }
+    },
+    {
+        "model": "main_app.systemconfiguration",
+        "pk": 2,
+        "fields": {
+            "key": "data_retention_days",
+            "value": "365",
+            "description": "Días de retención de datos históricos",
+            "value_type": "INTEGER",
+            "created_at": "2025-07-21T10:00:00Z",
+            "updated_at": "2025-07-21T10:00:00Z"
+        }
+    },
+    {
+        "model": "main_app.systemconfiguration",
+        "pk": 3,
+        "fields": {
+            "key": "alarm_notification_enabled",
+            "value": "true",
+            "description": "Habilitar notificaciones de alarmas",
+            "value_type": "BOOLEAN",
+            "created_at": "2025-07-21T10:00:00Z",
+            "updated_at": "2025-07-21T10:00:00Z"
+        }
+    },
+    {
+        "model": "main_app.systemconfiguration",
+        "pk": 4,
+        "fields": {
+            "key": "default_sampling_interval",
+            "value": "1000",
+            "description": "Intervalo de muestreo por defecto en milisegundos",
+            "value_type": "INTEGER",
+            "created_at": "2025-07-21T10:00:00Z",
+            "updated_at": "2025-07-21T10:00:00Z"
+        }
+    },
+    {
+        "model": "main_app.systemconfiguration",
+        "pk": 5,
+        "fields": {
+            "key": "system_name",
+            "value": "Supervisorio OPC-UA",
+            "description": "Nombre del sistema de supervisión",
+            "value_type": "STRING",
+            "created_at": "2025-07-21T10:00:00Z",
+            "updated_at": "2025-07-21T10:00:00Z"
+        }
+    },
+    {
+        "model": "main_app.systemconfiguration",
+        "pk": 6,
+        "fields": {
+            "key": "max_alarm_history",
+            "value": "10000",
+            "description": "Número máximo de alarmas históricas a mantener",
+            "value_type": "INTEGER",
+            "created_at": "2025-07-21T10:00:00Z",
+            "updated_at": "2025-07-21T10:00:00Z"
+        }
+    }
+]
