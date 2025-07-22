@@ -4,7 +4,8 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 from .models import (
     OpcUaServer, VariableType, OpcUaVariable, VariableReading,
-    ConnectionLog, Alarm, UserProfile, SystemConfiguration, AuditLog
+    ConnectionLog, Alarm, UserProfile, SystemConfiguration, AuditLog,
+    DataServer, DataVariable, DataReading
 )
 
 # Inline para UserProfile
@@ -179,7 +180,131 @@ class AuditLogAdmin(admin.ModelAdmin):
     def has_delete_permission(self, request, obj=None):
         return False  # Los logs no se pueden eliminar
 
+
+# === ADMIN PARA SISTEMA MULTI-PROTOCOLO ===
+
+@admin.register(DataServer)
+class DataServerAdmin(admin.ModelAdmin):
+    list_display = ['name', 'server_type', 'endpoint_url', 'is_active', 'created_by', 'created_at']
+    list_filter = ['server_type', 'is_active', 'created_at']
+    search_fields = ['name', 'endpoint_url', 'description']
+    readonly_fields = ['created_at', 'updated_at']
+    fieldsets = (
+        ('Información básica', {
+            'fields': ('name', 'server_type', 'endpoint_url', 'description', 'is_active')
+        }),
+        ('Autenticación', {
+            'fields': ('username', 'password'),
+            'classes': ('collapse',)
+        }),
+        ('Configuración avanzada', {
+            'fields': ('connection_config',),
+            'classes': ('collapse',)
+        }),
+        ('Metadatos', {
+            'fields': ('created_by', 'created_at', 'updated_at'),
+            'classes': ('collapse',)
+        })
+    )
+    
+    def save_model(self, request, obj, form, change):
+        if not change:  # Si es un nuevo objeto
+            obj.created_by = request.user
+        super().save_model(request, obj, form, change)
+
+
+@admin.register(DataVariable)
+class DataVariableAdmin(admin.ModelAdmin):
+    list_display = ['name', 'server', 'server_type', 'data_type', 'is_monitored', 'is_writable', 'alarm_enabled']
+    list_filter = ['server__server_type', 'data_type', 'is_monitored', 'is_writable', 'alarm_enabled', 'created_at']
+    search_fields = ['name', 'address', 'description', 'server__name']
+    readonly_fields = ['created_at', 'updated_at']
+    fieldsets = (
+        ('Información básica', {
+            'fields': ('name', 'server', 'address', 'description', 'variable_type')
+        }),
+        ('Configuración de datos', {
+            'fields': ('data_type', 'unit', 'min_value', 'max_value')
+        }),
+        ('Monitoreo', {
+            'fields': ('is_monitored', 'is_writable', 'sampling_interval')
+        }),
+        ('Alarmas', {
+            'fields': ('alarm_enabled', 'alarm_high_limit', 'alarm_low_limit'),
+            'classes': ('collapse',)
+        }),
+        ('Configuración del protocolo', {
+            'fields': ('protocol_config',),
+            'classes': ('collapse',)
+        }),
+        ('Metadatos', {
+            'fields': ('created_by', 'created_at', 'updated_at'),
+            'classes': ('collapse',)
+        })
+    )
+    
+    def server_type(self, obj):
+        return obj.server.server_type
+    server_type.short_description = 'Tipo de Servidor'
+    
+    def save_model(self, request, obj, form, change):
+        if not change:  # Si es un nuevo objeto
+            obj.created_by = request.user
+        super().save_model(request, obj, form, change)
+
+
+@admin.register(DataReading)
+class DataReadingAdmin(admin.ModelAdmin):
+    list_display = ['variable', 'server_name', 'server_type', 'timestamp', 'get_value_display', 'quality']
+    list_filter = ['quality', 'variable__server__server_type', 'timestamp']
+    search_fields = ['variable__name', 'variable__server__name']
+    readonly_fields = ['timestamp', 'get_value_display']
+    date_hierarchy = 'timestamp'
+    
+    fieldsets = (
+        ('Variable', {
+            'fields': ('variable',)
+        }),
+        ('Valor', {
+            'fields': ('timestamp', 'get_value_display', 'quality')
+        }),
+        ('Valores por tipo', {
+            'fields': ('value_boolean', 'value_integer', 'value_float', 'value_string', 'value_datetime', 'value_json'),
+            'classes': ('collapse',)
+        }),
+        ('Estado y errores', {
+            'fields': ('status_code', 'error_message'),
+            'classes': ('collapse',)
+        }),
+        ('Metadatos del protocolo', {
+            'fields': ('protocol_metadata',),
+            'classes': ('collapse',)
+        })
+    )
+    
+    def server_name(self, obj):
+        return obj.variable.server.name
+    server_name.short_description = 'Servidor'
+    
+    def server_type(self, obj):
+        return obj.variable.server.server_type
+    server_type.short_description = 'Tipo'
+    
+    def get_value_display(self, obj):
+        value = obj.get_value()
+        if value is None:
+            return '-'
+        return str(value)
+    get_value_display.short_description = 'Valor'
+    
+    def has_add_permission(self, request):
+        return False  # Las lecturas se generan automáticamente
+    
+    def has_change_permission(self, request, obj=None):
+        return False  # Las lecturas no se pueden modificar
+
+
 # Configuración del sitio de administración
-admin.site.site_header = "Supervisorio OPC-UA - Administración"
-admin.site.site_title = "Supervisorio OPC-UA"
+admin.site.site_header = "SuperVisorioApp - Sistema Multi-Protocolo"
+admin.site.site_title = "SuperVisorioApp"
 admin.site.index_title = "Panel de Administración"
